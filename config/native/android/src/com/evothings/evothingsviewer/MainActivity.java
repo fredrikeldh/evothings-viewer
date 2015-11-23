@@ -368,6 +368,7 @@ public class MainActivity extends CordovaActivity
 			}
 		}
 
+		// Download a file that is part of an app that is being cached.
 		void downloadCacheFile(File cacheRoot, String baseUrl, String appIndex, String url) throws Exception {
 			LOG.i("EvothingsWebViewClient", "downloadCacheFile("+cacheRoot.toString()+", "+baseUrl+", "+appIndex+", "+url+")");
 			// we got a file, let's download it.
@@ -411,6 +412,8 @@ public class MainActivity extends CordovaActivity
 			fis.close();
 		}
 
+		// Reads an entire InputStream to a String.
+		//
 		// Thanks to Pavel Repin
 		// http://stackoverflow.com/questions/309424/read-convert-an-inputstream-to-a-string
 		String utf8StreamToString(java.io.InputStream is) throws IOException {
@@ -420,6 +423,7 @@ public class MainActivity extends CordovaActivity
 			return str;
 		}
 
+		// Cache an app.
 		void evoCacheAdd(String url) throws Exception {
 			// Load the app list.
 			JSONObject appList;
@@ -482,6 +486,7 @@ public class MainActivity extends CordovaActivity
 			appView.loadUrlIntoView(Config.getStartUrl(), true);
 		}
 
+		// Write the list of cached apps to disk.
 		void saveAppList(JSONObject appList, JSONObject list, File appListFile) throws Exception {
 			appList.put("apps", list);
 			FileOutputStream fos = new FileOutputStream(appListFile);
@@ -493,6 +498,7 @@ public class MainActivity extends CordovaActivity
 			LOG.i("EvothingsWebViewClient", "wrote app-list.json.");
 		}
 
+		// Delete a cached app.
 		void evoCacheDelete(String index) throws Exception {
 			// Load the app list.
 			JSONObject appList;
@@ -540,6 +546,7 @@ public class MainActivity extends CordovaActivity
 			appView.loadUrlIntoView(Config.getStartUrl(), true);
 		}
 
+		// The Java equivalent of "rm -r".
 		void rmRecursive(File f) throws IOException {
 			if(f.isDirectory()) {
 				for(File c : f.listFiles())
@@ -549,7 +556,8 @@ public class MainActivity extends CordovaActivity
 				throw new IOException("Failed to delete file: " + f);
 		}
 
-		// The client's app-list.json has a different format from the native one.
+		// Generate a list of cached apps suitable for the Viewer's JavaScript side.
+		// The Viewer's app-list.json has a different format from the native one.
 		byte[] generateClientsAppListJson() throws Exception {
 			// Load the app list.
 			JSONObject nativeList = null;
